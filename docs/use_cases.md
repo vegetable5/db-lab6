@@ -12,7 +12,7 @@
 
 В markdown-файлі використовується опис діаграми
 
-```md
+````md
 
 <center style="
     border-radius:4px;
@@ -21,6 +21,7 @@
     padding: 1em;"
 >
 
+```plantuml
 @startuml
 
     right header
@@ -75,11 +76,12 @@
     end footer
 
 @enduml
+```
 
 **Діаграма прецедентів**
 
 </center>
-```
+````
 
 яка буде відображена наступним чином
 
