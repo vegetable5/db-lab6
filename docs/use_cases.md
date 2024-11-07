@@ -9,6 +9,7 @@
     padding: 1em;"
 >
 
+```plantuml
 @startuml
 
     actor "Гість" as Guest
@@ -47,6 +48,7 @@
     User -u-|> Guest
 
 @enduml
+```
 
 </center>
 
@@ -72,6 +74,7 @@
     Guest -u-> GSI   
 
 @enduml
+```
 
 </center>
 
@@ -107,6 +110,8 @@
     
 @enduml
 
+```
+
 </center>
 
 ## Адміністратор
@@ -118,6 +123,7 @@
     padding: 1em;"
 >
 
+```plantuml
 @startuml
     
     actor "Адміністратор" as Admin
@@ -139,5 +145,6 @@
     BUU .d.> ASBT:includes
     
 @enduml
+```
 
 </center>
