@@ -104,7 +104,7 @@
 @startuml
 
 entity User {
-    +id : NUMBER <<PK>>
+    +id : NUMBER 
     firstname : TEXT
     lastname : TEXT
     email : TEXT
@@ -113,21 +113,21 @@ entity User {
 }
 
 entity Role {
-    +id : NUMBER <<PK>>
+    +id : NUMBER 
     name : TEXT
 }
 
 entity Access {
-    +id : NUMBER <<PK>>
-    user_id : NUMBER <<FK>>
-    role_id : NUMBER <<FK>>
+    +id : NUMBER 
+    user_id : NUMBER 
+    role_id : NUMBER 
 }
 
 entity Data {
-    +id : NUMBER <<PK>>
+    +id : NUMBER 
     name : TEXT
     description : TEXT
-    ownerId : NUMBER <<FK>>
+    ownerId : NUMBER 
     format : TEXT
     content : TEXT
     createdAt : DATE
@@ -135,27 +135,28 @@ entity Data {
 }
 
 entity Tag {
-    +id : NUMBER <<PK>>
+    +id : NUMBER 
     name : TEXT
 }
 
 entity Category {
-    +id : NUMBER <<PK>>
+    +id : NUMBER 
     name : TEXT
 }
 
 entity Link {
-    +id : NUMBER <<PK>>
-    data_id : NUMBER <<FK>>
-    tag_id : NUMBER <<FK>>
+    +id : NUMBER 
+    data_id : NUMBER 
+    tag_id : NUMBER 
 }
 
-User ||--o{ Access : "has"
-Role ||--o{ Access : "has"
-Data ||--o{ Access : "is accessed by"
-Data ||--o{ Link : "has"
-Tag ||--o{ Link : "is linked to"
-Category ||--o{ Data : "categorizes"
+User "1,1"-d-"0,*" Access 
+Role "1,1"-u-"0,*" Access  
+Access "0,*"-r-"1,1" Data 
+Data "1,1"-r-"0,*" Link 
+Link "0,*"-r-"1,1" Tag 
+Data "1,1"-u-"1,1" Category 
+Category "0,*"-u-"0,1" Category 
 
 @enduml
 ```
