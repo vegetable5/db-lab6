@@ -32,6 +32,7 @@
   entity Role.name <<TEXT>> 
 
   entity Access <<ENTITY>> #93C1F5
+  entity Access.id <<NUMBER>>
 
   entity Data <<ENTITY>> #93C1F5
   entity Data.id <<NUMBER>> 
@@ -72,6 +73,8 @@
   Data *-d-- Data.description
   Data *-d-- Data.name
   Data *-d-- Data.id
+
+  Access *-l-- Access.id
 
   Tag *-u- Tag.name
   Tag *-u- Tag.id
@@ -121,13 +124,15 @@ entity Access {
     +id : NUMBER 
     user_id : NUMBER 
     role_id : NUMBER 
+    data_id : NUMBER 
 }
 
 entity Data {
     +id : NUMBER 
     name : TEXT
     description : TEXT
-    ownerId : NUMBER 
+    owner_id : NUMBER 
+    category_id : NUMBER 
     format : TEXT
     content : TEXT
     createdAt : DATE
