@@ -91,7 +91,7 @@
   Data "1,1"-r-"0,*" Link
   Link "0,*"-r-"1,1" Tag
 
-  Data "1,1"-u-"1,1" Category
+  Data "0,*"-u-"1,1" Category
 
 @enduml
 ```
@@ -160,7 +160,7 @@ Role "1,1"-u-"0,*" Access
 Access "0,*"-r-"1,1" Data 
 Data "1,1"-r-"0,*" Link 
 Link "0,*"-r-"1,1" Tag 
-Data "1,1"-u-"1,1" Category 
+Data "0,*"-u-"1,1" Category 
 Category "0,*"-u-"0,1" Category 
 
 @enduml
@@ -173,4 +173,4 @@ Category "0,*"-u-"0,1" Category
 ## Реляційна схема
 **Реляційна схема** — це структуроване представлення даних у базі даних, яке визначає, як ці дані організовані і взаємопов’язані. По суті, це план або модель даних, який містить інформацію про те, які таблиці (відношення) існують у базі, які атрибути (стовпці) мають ці таблиці, та які зв’язки існують між різними таблицями.
 
-![data_model](https://github.com/user-attachments/assets/e18528d8-07fd-403d-a0bd-3e5f58f9adf8)
+![opendata](https://github.com/user-attachments/assets/ccf12cd9-57e9-4c3b-bec0-b60074ed3edf)
