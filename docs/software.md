@@ -251,3 +251,146 @@ COMMIT;
 
 ## RESTfull сервіс для управління даними
 
+### server.js
+
+```javascript
+import router from './router.js';
+import express from 'express';
+const PORT = 5000;
+const app = express();
+app.use(express.json());
+app.use('/api', router);
+app.listen(PORT, () => {
+    console.log(`Server is on http://localhost:${PORT}`);
+});
+```
+
+### sql.js
+
+```javascript
+export const userSQL = {
+    findUsers: `SELECT * FROM user`,
+    findUserById: `SELECT * FROM user WHERE user_id = ?`,
+    createUser: `INSERT INTO user (firstname, lastname, email, login, password) VALUES (?, ?, ?, ?, ?)`,
+    updateUserById: `UPDATE user SET firstname = ?, lastname = ?, email = ?, login = ?, password = ? WHERE user_id = ?`,
+    deleteUserById: `DELETE FROM user WHERE user_id = ?`,
+};
+```
+
+### connection.js
+
+```javascript
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
+dotenv.config();
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: process.env.DB_PASSWORD,
+    database: 'opendatamodel',
+    waitForConnections: true,
+});
+export default pool;
+```
+
+### controller.js
+
+```javascript
+import pool from './connection.js';
+import { userSQL } from './sql/sql.js';
+
+class UserController {
+    async getUserById(req, res) {
+        try {
+            const { id } = req.params;
+            const [response] = await pool.execute(userSQL.findUserById, [id]);
+            if (response.length === 0) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            res.json(response[0]);
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+    }
+    async getUsers(req, res) {
+        try {
+            const [response] = await pool.execute(userSQL.findUsers);
+            res.json(response);
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+    }
+    async createUser(req, res) {
+        try {
+            const { firstname, lastname, email, login, password } = req.body;
+            const [response] = await pool.execute(userSQL.createUser, [
+                firstname,
+                lastname,
+                email,
+                login,
+                password,
+            ]);
+            res.status(201).json({
+                message: 'User created',
+                user: {
+                    id: response.insertId,
+                    firstname,
+                    lastname,
+                    email,
+                    login,
+                },
+            });
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+    }
+    async updateUser(req, res) {
+        try {
+            const { id } = req.params;
+            const { firstname, lastname, email, login, password } = req.body;
+            const [response] = await pool.execute(userSQL.updateUserById, [
+                firstname,
+                lastname,
+                email,
+                login,
+                password,
+                id,
+            ]);
+            if (response.affectedRows === 0) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            res.json('User updated');
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+    }
+    async deleteUser(req, res) {
+        try {
+            const { id } = req.params;
+            const [response] = await pool.execute(userSQL.deleteUserById, [id]);
+            if (response.affectedRows === 0) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            res.json('User deleted');
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+    }
+}
+export default new UserController();
+```
+
+### router.js
+
+```javascript
+import { Router } from 'express';
+import UserController from './controller.js';
+const router = Router();
+router.post('/user/', UserController.createUser);
+router.patch('/user/:id', UserController.updateUser);
+router.delete('/user/:id', UserController.deleteUser);
+router.get('/user/all', UserController.getUsers);
+router.get('/user/:id', UserController.getUserById);
+export default router;
+```
+
